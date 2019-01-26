@@ -8,6 +8,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 )
 
@@ -103,7 +104,12 @@ var (
 
 // NewPC TODO(rjeczalik): document
 func NewPC(r io.Reader) (*PC, error) {
-	return NewPCVars(r, make(map[string]string))
+	vars := map[string]string{
+		"GOOS": runtime.GOOS,
+		"GOARCH": runtime.GOARCH,
+		"GOPATH": os.Getenv("GOPATH"),
+	}
+	return NewPCVars(r, vars)
 }
 
 // NewPCVars TODO(rjeczalik): document
